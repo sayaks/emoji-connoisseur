@@ -1,14 +1,14 @@
 {
-	"description": "Curates emojis from any server and lets you use them without Nitro.",
+    "description": "Curates emojis from any server and lets you use them without Nitro.",
 
-	"database": {
-		"user": "connoisseur",
-		"password": "hunter2",
-		"database": "connoisseur",
-		"host": "127.0.0.1"},
+    "database": {
+        "user": "connoisseur",
+        "password": "hunter2",
+        "database": "connoisseur",
+        "host": "127.0.0.1"},
 
-	"tokens": {
-		"discord": "sek.rit.token",
-		"stats": {
-			"bots.discord.pw": null,
-			"discordbots.org": null}}}
+    "tokens": {
+        "discord": "sek.rit.token",
+        "stats": {
+            "bots.discord.pw": null,
+            "discordbots.org": null}}}

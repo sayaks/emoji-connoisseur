@@ -7,4 +7,4 @@ import utils
 
 
 def is_owner():
-	return commands.check(utils.is_owner)
+    return commands.check(utils.is_owner)

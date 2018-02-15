@@ -9,23 +9,23 @@ import asyncpg
 
 
 def _get_config():
-	with open(str(DATA_DIR / 'config.json')) as config_file:
-		config = json.load(config_file)
-	return config
+    with open(str(DATA_DIR / 'config.json')) as config_file:
+        config = json.load(config_file)
+    return config
 
 
 async def _get_db():
-	credentials = CONFIG['database']
-	db = await asyncpg.create_pool(**credentials)
-	await db.execute('CREATE SCHEMA IF NOT EXISTS connoisseur')
-	await db.execute(
-		'CREATE TABLE IF NOT EXISTS connoisseur.emojis('
-			'name VARCHAR(32) NOT NULL,'
-			'id BIGINT NOT NULL UNIQUE,'
-			'author BIGINT NOT NULL,'
-			'animated BOOLEAN DEFAULT FALSE)')
-	await db.execute('CREATE TABLE IF NOT EXISTS connoisseur.blacklists(id bigint NOT NULL UNIQUE)')
-	return db
+    credentials = CONFIG['database']
+    db = await asyncpg.create_pool(**credentials)
+    await db.execute('CREATE SCHEMA IF NOT EXISTS connoisseur')
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS connoisseur.emojis('
+            'name VARCHAR(32) NOT NULL,'
+            'id BIGINT NOT NULL UNIQUE,'
+            'author BIGINT NOT NULL,'
+            'animated BOOLEAN DEFAULT FALSE)')
+    await db.execute('CREATE TABLE IF NOT EXISTS connoisseur.blacklists(id bigint NOT NULL UNIQUE)')
+    return db
 
 
 DATA_DIR = Path('data')
