@@ -21,8 +21,12 @@ logger = logging.getLogger('cogs.emoji')
 
 
 class Emotes:
+	# -- you should really explain what these regexes will output
+	# -- i can understand what they detect, but i'd like to know 
+	# -- how to use them as well
 	EMOTE_REGEX = re.compile(r'<a?:([\w_]{2,32}):(\d{15,21})>', re.ASCII)
 	EMOTE_IN_TEXT_REGEX = re.compile(r'(?!<:)<?(;|:)([\w_]{2,32})(?!:\d+>)\1(?:\d+>)?', re.ASCII)
+	# -- too long line
 
 	def __init__(self, bot):
 		self.bot = bot
@@ -31,8 +35,10 @@ class Emotes:
 
 		# Keep track of replies so that if the user edits/deletes a message,
 		# we delete/edit the corresponding reply.
+		# -- nice, actual comments
 		self.replies = {}
 
+	# -- if this is a gross hack please comment why and also label with HACK:
 	def __unload(self):
 		self.session.close()
 
@@ -45,6 +51,7 @@ class Emotes:
 		guilds = []
 		for guild in self.bot.guilds:
 			if await self.bot.is_owner(guild.owner) and guild.name.startswith('EmojiBackend'):
+				# -- line too long >:c
 				guilds.append(guild)
 		self.guilds = guilds
 		logger.info('In ' + str(len(guilds)) + ' backend guilds.')
@@ -65,6 +72,9 @@ class Emotes:
 		reply = self.replies[message_id]
 		if not emotes:
 			return await reply.delete()
+			# -- this means that if you edit a message that previously had
+			# -- emotes then it'll keep updating it, which is not the case with
+			# -- normal messages
 		elif emotes == reply.content:
 			# don't edit a message if we don't need to
 			return
@@ -74,6 +84,8 @@ class Emotes:
 	async def on_raw_message_delete(self, message_id, channel_id):
 		try:
 			await self.replies.pop(message_id).delete()
+			# -- is it really better to assume that a deleted message
+			# -- will be in replies, than to check if it is before deleting?
 		except KeyError:
 			pass
 
@@ -81,6 +93,7 @@ class Emotes:
 		messages = (self.replies.pop(id) for id in message_ids if id in self.replies)
 		try:  # this will only work if we have manage_messages in that channel
 			await self.bot.delete_messages(messages)
+			# -- can you not check this without using try-except?
 		except discord.Forbidden:
 			for message in messages:  # should always work, since these are our messages
 				await message.delete()
@@ -123,6 +136,7 @@ class Emotes:
 		if context.message.attachments:
 			attachment = context.message.attachments[0]
 			# as far as i can tell, this is how discord replaces filenames
+			# -- and how is that? also what do you mean "replaces filenames"
 			name = args[0] if args else attachment.filename.split('.')[0].replace(' ', '')
 			url = attachment.url
 
@@ -142,7 +156,8 @@ class Emotes:
 				url = args[1]
 			else:
 				url = self.emote_url(match.group(2))
-
+		# -- i don't really know what you're doing in either of these cases
+		# -- maybe i'm too tired
 		else:
 			return await context.send('Your message had no emotes and no name!')
 
